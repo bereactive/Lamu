@@ -120,8 +120,8 @@ NOTE: comment out what I don't use
 /*HEADER*/
 @import "modules/header/topbar";
 @import "modules/header/subnav";
-@import "modules/header/off-canvas";
-@import "modules/header/workspace-panel";
+@import "modules/workspace/off-canvas";
+@import "modules/workspace/workspace-panel";
 
 /*MAP*/
 @import "modules/map/map";

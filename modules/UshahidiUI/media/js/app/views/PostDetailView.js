@@ -62,7 +62,9 @@ define(['underscore', 'jquery', 'App', 'handlebars', 'views/PostItemView', 'text
 			},
 			//@todo move elsewhere
 			attributeTypeViewMap : {
+				'datetime' : 'DateTimeValue',
 				'link' : 'LinkValue',
+				//'point' : 'PointValue',
 			},
 			renderFieldValue : function (attribute, key, value, $el)
 			{

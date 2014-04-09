@@ -62,6 +62,7 @@ define(['underscore', 'jquery', 'App', 'handlebars', 'views/PostItemView', 'text
 			},
 			//@todo move elsewhere
 			attributeTypeViewMap : {
+				'link' : 'LinkValue',
 			},
 			renderFieldValue : function (attribute, key, value, $el)
 			{

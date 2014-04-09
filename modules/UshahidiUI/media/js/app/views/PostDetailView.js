@@ -7,43 +7,10 @@
  * @license    https://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License Version 3 (AGPL3)
  */
 
-define(['underscore', 'App', 'handlebars', 'views/PostItemView', 'text!templates/PostDetail.html', 'ddt'],
-	function(_, App, Handlebars, PostItemView, template, ddt)
+define(['underscore', 'jquery', 'App', 'handlebars', 'views/PostItemView', 'text!templates/PostDetail.html', 'ddt'],
+	function(_, $, App, Handlebars, PostItemView, template, ddt)
 	{
-		Handlebars.registerHelper('formField', function(key, field, form_id)
-		{
-			var
-				form = App.Collections.Forms.get(form_id),
-				attribute = form.getAttribute(key),
-				output = '',
-				i;
-
-			ddt.log('PostDetailView', 'Helper formField, attribute', attribute);
-
-			output += attribute.label + ': ';
-			if (_.isArray(field))
-			{
-				for (i = 0; i < field.length; i++)
-				{
-					output += field[i].id + ' ' + field[i].value + ', ';
-				}
-			}
-			else if (_.isObject(field))
-			{
-				for (i in field)
-				{
-					output += i + ': ' + field[i] + '; ';
-				}
-			}
-			else
-			{
-				output += field;
-			}
-
-			return output;
-		});
-
-		return PostItemView.extend(
+		var PostDetailView = PostItemView.extend(
 		{
 			//Template HTML string
 			template: Handlebars.compile(template),
@@ -58,7 +25,63 @@ define(['underscore', 'App', 'handlebars', 'views/PostItemView', 'text!templates
 				// Redirect user to previous page (probably post list)
 				// @todo does this always make sense?
 				window.history.back();
+			},
+
+			onDomRefresh : function()
+			{
+				var $valuesEl = this.$('.post-values'),
+					data = this.model.toJSON(),
+					i;
+
+				for (i in data.values)
+				{
+					this.renderField(i, data.values[i], $valuesEl);
+				}
+			},
+
+			renderField : function(key, value, $el)
+			{
+				var
+					form = App.Collections.Forms.get(this.model.get('form')),
+					attribute = form.getAttribute(key),
+					i;
+
+				ddt.log('PostDetailView', 'renderField, attribute', attribute);
+
+				if (_.isArray(value))
+				{
+					for (i = 0; i < value.length; i++)
+					{
+						this.renderFieldValue(attribute, key + '.' + i, value[i].value, $el);
+					}
+				}
+				else
+				{
+					this.renderFieldValue(attribute, key, value, $el);
+				}
+			},
+			//@todo move elsewhere
+			attributeTypeViewMap : {
+			},
+			renderFieldValue : function (attribute, key, value, $el)
+			{
+				var viewName = (typeof this.attributeTypeViewMap[attribute.type] !== 'undefined') ?
+					this.attributeTypeViewMap[attribute.type] :
+					'Value';
+
+				require(['views/values/' + viewName], function (ValueView)
+				{
+					var view = new ValueView({
+						attribute : attribute,
+						key : key,
+						value : value
+					});
+					view.render();
+					$el.append(view.el);
+				});
 			}
 
 		});
+
+		return PostDetailView;
 	});

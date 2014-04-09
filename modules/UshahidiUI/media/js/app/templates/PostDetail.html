@@ -84,11 +84,9 @@
 				</p>
 			</div> <!-- end .post-excerpt -->
 
-			{{#each values}}
-				<div class="post-value">
-					{{formField @key this ../form}}
-				</div>
-			{{/each}}
+			<div class="post-values">
+				<!-- Populated in onDomRefresh callback -->
+			</div> <!-- end .post-values -->
 
 		</div> <!-- end .post-details -->
 		<hr>

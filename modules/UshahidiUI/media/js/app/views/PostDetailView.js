@@ -44,27 +44,34 @@ define(['underscore', 'jquery', 'App', 'handlebars', 'views/PostItemView', 'text
 				var
 					form = App.Collections.Forms.get(this.model.get('form')),
 					attribute = form.getAttribute(key),
-					i;
+					i,
+					$fieldEl;
 
 				ddt.log('PostDetailView', 'renderField, attribute', attribute);
+
+				$fieldEl = $('<div></div>')
+					.addClass('post-value')
+					.text(attribute.label);
+				$el.append($fieldEl);
 
 				if (_.isArray(value))
 				{
 					for (i = 0; i < value.length; i++)
 					{
-						this.renderFieldValue(attribute, key + '.' + i, value[i].value, $el);
+						this.renderFieldValue(attribute, key + '.' + i, value[i].value, $fieldEl);
 					}
 				}
 				else
 				{
-					this.renderFieldValue(attribute, key, value, $el);
+					this.renderFieldValue(attribute, key, value, $fieldEl);
 				}
 			},
 			//@todo move elsewhere
 			attributeTypeViewMap : {
 				'datetime' : 'DateTimeValue',
 				'link' : 'LinkValue',
-				//'point' : 'PointValue',
+				'point' : 'PointValue',
+				'geometry' : 'GeometryValue',
 			},
 			renderFieldValue : function (attribute, key, value, $el)
 			{

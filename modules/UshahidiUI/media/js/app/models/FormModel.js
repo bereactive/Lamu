@@ -164,6 +164,35 @@ define(['jquery', 'backbone', 'App'],
 				}
 
 				return rules;
+			},
+
+			getAttribute : function (key)
+			{
+				var groups = this.get('groups'),
+					group,
+					attributes,
+					attribute,
+					i,
+					j;
+
+
+				for (i = 0; i < groups.length; i++)
+				{
+					group = groups[i];
+					attributes = group.attributes;
+
+					for (j = 0; j < attributes.length; j++)
+					{
+						attribute = attributes[j];
+
+						if (attribute.key === key)
+						{
+							return attribute;
+						}
+					}
+				}
+
+				return false;
 			}
 		});
 		return FormModel;

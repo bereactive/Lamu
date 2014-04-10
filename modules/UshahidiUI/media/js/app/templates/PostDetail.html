@@ -84,6 +84,12 @@
 				</p>
 			</div> <!-- end .post-excerpt -->
 
+			{{#each values}}
+				<div class="post-value">
+					{{formField @key this ../form}}
+				</div>
+			{{/each}}
+
 		</div> <!-- end .post-details -->
 		<hr>
 		<!-- disabled until T79 is complete

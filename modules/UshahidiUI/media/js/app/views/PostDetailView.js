@@ -7,10 +7,42 @@
  * @license    https://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License Version 3 (AGPL3)
  */
 
-define(['App', 'handlebars', 'views/PostItemView', 'text!templates/PostDetail.html'],
-	function(App, Handlebars, PostItemView, template)
+define(['underscore', 'App', 'handlebars', 'views/PostItemView', 'text!templates/PostDetail.html', 'ddt'],
+	function(_, App, Handlebars, PostItemView, template, ddt)
 	{
-		//CollectionView provides some default rendering logic
+		Handlebars.registerHelper('formField', function(key, field, form_id)
+		{
+			var
+				form = App.Collections.Forms.get(form_id),
+				attribute = form.getAttribute(key),
+				output = '',
+				i;
+
+			ddt.log('PostDetailView', 'Helper formField, attribute', attribute);
+
+			output += attribute.label + ': ';
+			if (_.isArray(field))
+			{
+				for (i = 0; i < field.length; i++)
+				{
+					output += field[i].id + ' ' + field[i].value + ', ';
+				}
+			}
+			else if (_.isObject(field))
+			{
+				for (i in field)
+				{
+					output += i + ': ' + field[i] + '; ';
+				}
+			}
+			else
+			{
+				output += field;
+			}
+
+			return output;
+		});
+
 		return PostItemView.extend(
 		{
 			//Template HTML string

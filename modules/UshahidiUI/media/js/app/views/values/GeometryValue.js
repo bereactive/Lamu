@@ -13,5 +13,13 @@ define(['handlebars', 'views/values/Value', 'text!templates/values/GeometryValue
 		{
 			className: 'post-value',
 			template : Handlebars.compile(template),
+			events : {
+				'click .js-show-point-on-map' : 'showPoint'
+			},
+			showPoint : function(e)
+			{
+				e.preventDefault();
+				App.vent.trigger('map:showValue', this.key);
+			}
 		});
 	});

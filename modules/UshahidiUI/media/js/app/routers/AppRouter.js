@@ -29,9 +29,17 @@ define(['marionette'],
 				'users' : 'users',
 				'tags' : 'tags',
 				'settings/site' : 'settings',
+				'settings/data-providers' : 'dataProviders',
+				// 'settings/data-providers/:provider' : 'dataProvidersConfig',
+
+				// FIXME: temp route for sms hard coding
+				'settings/data-providers/sms' : 'dataProvidersConfigSms',
+
 				'apiexplorer' : 'apiExplorer',
 				//'login' : 'login',
 				//'register' : 'register',
+
+				// *path needs to be last
 				'*path' : 'index'
 			}
 		});

@@ -99,6 +99,9 @@
    $PARTIALS
 \*------------------------------------*/
 
+/*ACTIONS BAR*/
+@import "partials/actions-bar/actions-bar";
+
 /*CARDS*/
 @import "partials/card/card";
 
@@ -113,6 +116,9 @@
 
 /*ACTIONS BAR*/
 @import "partials/actions-bar/actions-bar";
+
+/*INPUT FIELDS*/
+@import "partials/input-field/input-field";
 
 
 
@@ -150,6 +156,7 @@
 
 /*MESSAGES*/
 @import "modules/messages/listings/messages";
+@import "modules/messages/config/message-config";
 
 /*TOOLS*/
 @import "modules/tools/manage-users/manage-users";

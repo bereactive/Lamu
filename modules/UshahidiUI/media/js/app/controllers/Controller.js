@@ -24,8 +24,10 @@ define(['jquery', 'App', 'backbone', 'marionette',
 	'collections/SetCollection',
 	'collections/RoleCollection',
 	'collections/UserCollection',
+	'collections/DataProviderCollection',
 
-	'models/UserModel'
+	'models/UserModel',
+	'models/DataProviderModel'
 	],
 	function($, App, Backbone, Marionette,
 		ModalController,
@@ -44,8 +46,10 @@ define(['jquery', 'App', 'backbone', 'marionette',
 		SetCollection,
 		RoleCollection,
 		UserCollection,
+		DataProviderCollection,
 
-		UserModel
+		UserModel,
+		DataProviderModel
 		)
 	{
 		return Backbone.Marionette.Controller.extend(
@@ -114,6 +118,107 @@ define(['jquery', 'App', 'backbone', 'marionette',
 
 				// Open the user collection, but do not fetch it until necessary
 				App.Collections.Users = new UserCollection();
+
+				// Fake DataProviders Collection
+				App.Collections.DataProviders = new DataProviderCollection([
+					// use actual model object so call model.parse()
+					new DataProviderModel({
+						id: 'smssync',
+						name: 'SMSSync',
+						type: 'SMS',
+						enabled: true,
+						config: {
+							'from' : '12345',
+							'secret' : '1234'
+						},
+						form: {
+							'from' : {
+								label: 'Phone Number',
+								input: 'text',
+								description: ''
+							},
+							'secret' : {
+								label: 'Secret',
+								input: 'text',
+								description: ''
+							},
+						}
+					}, { parse : true }),
+
+					new DataProviderModel({
+						id: 'email',
+						name: 'Email Server',
+						type: 'email',
+						enabled: true,
+						config: {
+							'username': 'user@example.com',
+							'password': '**********',
+							'server': 'mail.example.com',
+							'port': 25
+						},
+						form: {
+							'username' : {
+								label: 'Username',
+								input: 'text',
+								description: ''
+							},
+							'password' : {
+								label: 'Password',
+								input: 'password',
+								description: ''
+							},
+							'server' : {
+								label: 'Server',
+								input: 'text',
+								description: ''
+							},
+							'port' : {
+								label: 'Port',
+								input: 'number',
+								description: 'Common ports are 25, 110, 995(Gmail POP3 SSL), 993(Gmail IMAP SSL)'
+							},
+							'type' : {
+								label: 'Server Type'
+							},
+							'ssl' : {
+								label: 'Enable SSL Connection?',
+								description: 'Enable or disable encrypted connection'
+							}
+						}
+					}, { parse : true }),
+
+					new DataProviderModel({
+						id: 'twitter',
+						name: 'Twitter',
+						type: 'twitter',
+						enabled: true,
+						config: {
+							'accessTokenSecret': 'hashtags seperated with commas'
+						},
+						form: {
+							'consumerKey' : {
+								label: 'Consumer Key:',
+								input: 'text',
+								description: ''
+							},
+							'consumerKeySecret' : {
+								label: 'Consumer Secret:',
+								input: 'text',
+								description: ''
+							},
+							'accessToken' : {
+								label: 'Access Token:',
+								input: 'text',
+								description: ''
+							},
+							'accessTokenSecret' : {
+								label: 'Access Token Secret:',
+								input: 'text',
+								description: ''
+							}
+						}
+					}, { parse : true })
+				]);
 
 				// Grab tag collection, use client-side paging and fetch all tags from server at once
 				App.Collections.Tags = new TagCollection([], { mode: 'client' });
@@ -189,7 +294,6 @@ define(['jquery', 'App', 'backbone', 'marionette',
 			{
 				if (this.layout.mainRegion.currentView instanceof HomeLayout === false)
 				{
-					ddt.log('Controller', 'showHomeLayout');
 					this.layout.mainRegion.show(this.homeLayout);
 				}
 				this.homeLayout.showRegions();
@@ -261,6 +365,7 @@ define(['jquery', 'App', 'backbone', 'marionette',
 					}));
 				});
 			},
+
 			sets : function ()
 			{
 				var that = this;
@@ -422,5 +527,47 @@ define(['jquery', 'App', 'backbone', 'marionette',
 					}));
 				});
 			},
-		});
+			/**
+			 * Shows a data provider listing
+			 */
+			dataProviders : function ()
+			{
+				var that = this;
+				require(['views/settings/DataProviderList'], function(DataProviderList)
+				{
+					App.vent.trigger('page:change', 'data-providers');
+					that.layout.mainRegion.show(new DataProviderList({
+						collection : App.Collections.DataProviders
+					}));
+				});
+			},
+			/**
+			 * Show a config form for an individual data provider
+			 * @param  String provider id
+			 */
+			dataProvidersConfig : function(id)
+			{
+				var that = this;
+				require(['views/settings/DataProviderConfig'], function(DataProviderConfigView)
+				{
+					App.vent.trigger('page:change', 'data-providers');
+					that.layout.mainRegion.show(new DataProviderConfigView({
+						model : App.Collections.DataProviders.get(id)
+					}));
+				});
+			},
+
+			// FIXME: temp controller for sms hard coding
+			dataProvidersConfigSms : function(id)
+			{
+				var that = this;
+				require(['views/settings/DataProviderConfigSms'], function(DataProviderConfigView)
+				{
+					App.vent.trigger('page:change', 'data-providers');
+					that.layout.mainRegion.show(new DataProviderConfigView({
+						model : App.Collections.DataProviders.get(id)
+					}));
+				});
+			}
 	});
+});

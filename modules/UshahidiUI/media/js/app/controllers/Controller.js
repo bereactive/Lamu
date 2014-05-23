@@ -582,11 +582,13 @@ define(['jquery', 'App', 'backbone', 'marionette',
 					return;
 				}
 
-				require(['views/settings/DataProviderConfigSms'], function(DataProviderConfigView)
+				require(['views/settings/DataProviderConfig', 'text!templates/settings/DataProviderConfigSms.html', 'handlebars'],
+					function(DataProviderConfigView, template, Handlebars)
 				{
 					App.vent.trigger('page:change', 'data-providers');
 					that.layout.mainRegion.show(new DataProviderConfigView({
-						model : App.Collections.DataProviders.get(id)
+						model : App.Collections.DataProviders.get(id),
+						template: Handlebars.compile(template)
 					}));
 				});
 			}

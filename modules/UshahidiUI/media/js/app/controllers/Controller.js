@@ -533,6 +533,13 @@ define(['jquery', 'App', 'backbone', 'marionette',
 			dataProviders : function ()
 			{
 				var that = this;
+
+				if (!App.feature('data_provider_config'))
+				{
+					App.appRouter.navigate('', { trigger : true });
+					return;
+				}
+
 				require(['views/settings/DataProviderList'], function(DataProviderList)
 				{
 					App.vent.trigger('page:change', 'data-providers');
@@ -548,6 +555,13 @@ define(['jquery', 'App', 'backbone', 'marionette',
 			dataProvidersConfig : function(id)
 			{
 				var that = this;
+
+				if (!App.feature('data_provider_config'))
+				{
+					App.appRouter.navigate('', { trigger : true });
+					return;
+				}
+
 				require(['views/settings/DataProviderConfig'], function(DataProviderConfigView)
 				{
 					App.vent.trigger('page:change', 'data-providers');
@@ -561,6 +575,13 @@ define(['jquery', 'App', 'backbone', 'marionette',
 			dataProvidersConfigSms : function(id)
 			{
 				var that = this;
+
+				if (!App.feature('data_provider_config'))
+				{
+					App.appRouter.navigate('', { trigger : true });
+					return;
+				}
+
 				require(['views/settings/DataProviderConfigSms'], function(DataProviderConfigView)
 				{
 					App.vent.trigger('page:change', 'data-providers');

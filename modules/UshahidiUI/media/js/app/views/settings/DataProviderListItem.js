@@ -16,13 +16,12 @@ define(['App','handlebars', 'marionette', 'text!templates/settings/DataProviderL
 			//Template HTML string
 			template: Handlebars.compile(template),
 			tagName: 'li',
-			className: 'list-view-data-provider',
+			className: 'list-view-data-provider  data-provider-card__list-item',
 
 			// Value to track if checkbox for this post has been selected
 			selected : false,
 			events: {
-				'click .js-data-provider-edit' : 'showEdit',
-				'click .js-data-provider-card__list-item' : 'disableCard'
+				'click .js-provider-status' : 'disableCard'
 			},
 
 			initialize: function()
@@ -31,7 +30,7 @@ define(['App','handlebars', 'marionette', 'text!templates/settings/DataProviderL
 				this.listenTo(this.model,'change', this.render);
 			},
 
-			modelEvent: {
+			modelEvents: {
 				'sync': 'render'
 			},
 
@@ -44,16 +43,13 @@ define(['App','handlebars', 'marionette', 'text!templates/settings/DataProviderL
 			{
 				e.preventDefault();
 
-				this.$(e.currentTarget);
-				this.$(e.currentTarget).find('.data-provider-card').toggleClass('disabled');
+				this.$el.toggleClass('disabled');
 
-				var $el = this.$(e.currentTarget).find('.data-provider-card');
-
-				if ( $el.hasClass('disabled') ) {
-					this.$(e.currentTarget).find('.data-provider-status').text('Enable');
+				if ( this.$el.hasClass('disabled') ) {
+					this.$('.js-provider-status').text('Enable');
 				}
 				else {
-					this.$(e.currentTarget).find('.data-provider-status').text('Disable');
+					this.$('.js-provider-status').text('Disable');
 				}
 			}
 		});

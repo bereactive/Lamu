@@ -28,7 +28,6 @@
 
 .data-provider-card__list-item {
 	position: relative;
-	cursor: pointer;
 }
 
 .data-provider-card {
@@ -95,9 +94,14 @@
 }
 
 .data-provider-status {
-	@include button($padding: $button-sml, $bg: $secondary-color, $disabled: true, $radius: true, $full-width: true);
+	@include button($padding: $button-sml, $bg: $secondary-color, $disabled: true, $radius: true, $full-width: false);
 	opacity: 1;
-	cursor: pointer;
+	color: $accent-color;
+}
+
+.data-provider-configure {
+	@include button($padding: $button-sml, $bg: $secondary-color, $disabled: false, $radius: true, $full-width: false);
+	opacity: 1;
 	color: $accent-color;
 }
 
@@ -114,7 +118,7 @@
 		}
 	}
 	.data-provider-status {
-		@include button($padding: $button-sml, $bg: $success-color, $disabled: true, $radius: true, $full-width: true);
+		@include button($padding: $button-sml, $bg: $success-color, $disabled: true, $radius: true, $full-width: false);
 		opacity: 1;
 		cursor: pointer;
 	}

@@ -30,10 +30,9 @@ define(['marionette'],
 				'tags' : 'tags',
 				'settings/site' : 'settings',
 				'settings/data-providers' : 'dataProviders',
-				// 'settings/data-providers/:provider' : 'dataProvidersConfig',
-
 				// FIXME: temp route for sms hard coding
 				'settings/data-providers/sms' : 'dataProvidersConfigSms',
+				'settings/data-providers/:provider' : 'dataProvidersConfig',
 
 				'apiexplorer' : 'apiExplorer',
 				//'login' : 'login',

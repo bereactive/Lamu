@@ -528,6 +528,32 @@ define(['jquery', 'App', 'backbone', 'marionette',
 				});
 			},
 			/**
+			 * Set up data provider layout
+			 * @todo refactor to better handle loading dplayout
+			 */
+			_setupDataProviderLayout : function (DataProviderLayout)
+			{
+				var that = this;
+
+				if (! this._dpLayout)
+				{
+					var dpTypes = new Backbone.Collection([
+								{ id: 'sms', name: 'SMS', icon: 'mobile' },
+								{ id: 'email', name: 'Email', icon: 'envelope-o' },
+								{ id: 'twitter', name: 'Twitter', icon: 'twitter' },
+								{ id: 'rss', name: 'RSS', icon: 'rss' }
+							]),
+						dpLayout = new DataProviderLayout({
+							collection : dpTypes
+						});
+
+					this._dpLayout = dpLayout;
+				}
+
+				that.layout.mainRegion.show(this._dpLayout);
+				return this._dpLayout;
+			},
+			/**
 			 * Shows a data provider listing
 			 */
 			dataProviders : function ()
@@ -540,12 +566,17 @@ define(['jquery', 'App', 'backbone', 'marionette',
 					return;
 				}
 
-				require(['views/settings/DataProviderList'], function(DataProviderList)
+				require(['views/settings/DataProviderLayout', 'views/settings/DataProviderList'],
+					function(DataProviderLayout, DataProviderList)
 				{
 					App.vent.trigger('page:change', 'data-providers');
-					that.layout.mainRegion.show(new DataProviderList({
-						collection : App.Collections.DataProviders
-					}));
+					var
+						dpList = new DataProviderList({
+							collection : App.Collections.DataProviders
+						}),
+						dpLayout = that._setupDataProviderLayout(DataProviderLayout);
+
+					dpLayout.main.show(dpList);
 				});
 			},
 			/**
@@ -562,10 +593,14 @@ define(['jquery', 'App', 'backbone', 'marionette',
 					return;
 				}
 
-				require(['views/settings/DataProviderConfig'], function(DataProviderConfigView)
+				require(['views/settings/DataProviderLayout', 'views/settings/DataProviderConfig'], function(DataProviderLayout, DataProviderConfigView)
 				{
 					App.vent.trigger('page:change', 'data-providers');
-					that.layout.mainRegion.show(new DataProviderConfigView({
+
+					var
+						dpLayout = that._setupDataProviderLayout(DataProviderLayout);
+
+					dpLayout.main.show(new DataProviderConfigView({
 						model : App.Collections.DataProviders.get(id)
 					}));
 				});
@@ -582,11 +617,15 @@ define(['jquery', 'App', 'backbone', 'marionette',
 					return;
 				}
 
-				require(['views/settings/DataProviderConfig', 'text!templates/settings/DataProviderConfigSms.html', 'handlebars'],
-					function(DataProviderConfigView, template, Handlebars)
+				require(['views/settings/DataProviderLayout', 'views/settings/DataProviderConfig', 'text!templates/settings/DataProviderConfigSms.html', 'handlebars'],
+					function(DataProviderLayout, DataProviderConfigView, template, Handlebars)
 				{
 					App.vent.trigger('page:change', 'data-providers');
-					that.layout.mainRegion.show(new DataProviderConfigView({
+
+					var
+						dpLayout = that._setupDataProviderLayout(DataProviderLayout);
+
+					dpLayout.main.show(new DataProviderConfigView({
 						model : App.Collections.DataProviders.get(id),
 						template: Handlebars.compile(template)
 					}));

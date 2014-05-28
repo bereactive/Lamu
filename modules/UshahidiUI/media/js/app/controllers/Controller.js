@@ -119,8 +119,11 @@ define(['jquery', 'App', 'backbone', 'marionette',
 				// Open the user collection, but do not fetch it until necessary
 				App.Collections.Users = new UserCollection();
 
+				App.Collections.DataProviders = new DataProviderCollection();
+				App.Collections.DataProviders.fetch();
+
 				// Fake DataProviders Collection
-				App.Collections.DataProviders = new DataProviderCollection([
+				/*App.Collections.DataProviders = new DataProviderCollection([
 					// use actual model object so call model.parse()
 					new DataProviderModel({
 						id: 'smssync',
@@ -218,7 +221,7 @@ define(['jquery', 'App', 'backbone', 'marionette',
 							}
 						}
 					}, { parse : true })
-				]);
+				]);*/
 
 				// Grab tag collection, use client-side paging and fetch all tags from server at once
 				App.Collections.Tags = new TagCollection([], { mode: 'client' });

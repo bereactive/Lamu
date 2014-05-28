@@ -556,7 +556,7 @@ define(['jquery', 'App', 'backbone', 'marionette',
 			/**
 			 * Shows a data provider listing
 			 */
-			dataProviders : function ()
+			messageSettingsMain : function ()
 			{
 				var that = this;
 
@@ -569,7 +569,7 @@ define(['jquery', 'App', 'backbone', 'marionette',
 				require(['views/settings/DataProviderLayout', 'views/settings/DataProviderList'],
 					function(DataProviderLayout, DataProviderList)
 				{
-					App.vent.trigger('page:change', 'data-providers');
+					App.vent.trigger('page:change', 'messages/settings');
 					var
 						dpList = new DataProviderList({
 							collection : App.Collections.DataProviders
@@ -595,7 +595,7 @@ define(['jquery', 'App', 'backbone', 'marionette',
 
 				require(['views/settings/DataProviderLayout', 'views/settings/DataProviderConfig'], function(DataProviderLayout, DataProviderConfigView)
 				{
-					App.vent.trigger('page:change', 'data-providers');
+					App.vent.trigger('page:change', 'messages/settings');
 
 					var
 						dpLayout = that._setupDataProviderLayout(DataProviderLayout);
@@ -607,7 +607,7 @@ define(['jquery', 'App', 'backbone', 'marionette',
 			},
 
 			// FIXME: temp controller for sms hard coding
-			dataProvidersConfigSms : function(id)
+			dataProvidersConfigSMS : function(id)
 			{
 				var that = this;
 
@@ -620,7 +620,7 @@ define(['jquery', 'App', 'backbone', 'marionette',
 				require(['views/settings/DataProviderLayout', 'views/settings/DataProviderConfig', 'text!templates/settings/DataProviderConfigSms.html', 'handlebars'],
 					function(DataProviderLayout, DataProviderConfigView, template, Handlebars)
 				{
-					App.vent.trigger('page:change', 'data-providers');
+					App.vent.trigger('page:change', 'messages/settings');
 
 					var
 						dpLayout = that._setupDataProviderLayout(DataProviderLayout);

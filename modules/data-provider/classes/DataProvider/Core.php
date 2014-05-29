@@ -17,12 +17,6 @@ abstract class DataProvider_Core {
 	protected $provider_name;
 
 	/**
-	 * [FROM] Number/Contact
-	 * @var array
-	 */
-	protected $_from = NULL;
-
-	/**
 	 * Authentication parameters for the default Data provider
 	 * @var array
 	 */
@@ -242,9 +236,6 @@ abstract class DataProvider_Core {
 
 		// Get provider options
 		$this->options();
-
-		// Get From
-		$this->from();
 	}
 
 	public function provider_name()
@@ -260,9 +251,7 @@ abstract class DataProvider_Core {
 	public function from()
 	{
 		$options = $this->options();
-		$this->_from = isset($options['from']) ? $options['from'] : '';
-
-		return $this->_from;
+		return isset($options['from']) ? $options['from'] : '';
 	}
 
 	/**

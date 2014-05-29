@@ -27,11 +27,6 @@ $plugin = array(
 			'label' => 'Secret',
 			'input' => 'text',
 			'description' => 'Set a secret so that only authorized SMSSync devices can send/recieve message. You need to configure the same secret in the SMSSync App.'
-		),
-		'from' => array(
-			'label' => 'From Phone Number',
-			'input' => 'text',
-			'description' => 'Phone number that messages are sent from'
 		)
 	),
 

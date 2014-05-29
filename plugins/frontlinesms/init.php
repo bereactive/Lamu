@@ -25,11 +25,6 @@ $plugin = array(
 				'input' => 'text',
 				'description' => 'The API key'
 		),
-		'f' => array(
-				'label' => 'From Phone Number',
-				'input' => 'text',
-				'description' => 'Phone number that messages are sent from'
-		),
 		'frontlinecloud_api_url' => array(
 				'label' => 'Frontlinecloud API URL',
 				'input' => 'text',

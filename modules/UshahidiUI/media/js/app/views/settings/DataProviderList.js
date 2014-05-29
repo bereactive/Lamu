@@ -29,6 +29,11 @@ define(['App', 'marionette', 'handlebars', 'underscore', 'views/settings/DataPro
 				'click .js-message-config-tab' : 'dataProviderActiveTab',
 			},
 
+			initialize : function (options)
+			{
+				this.itemViewOptions.configModel = options.configModel;
+			},
+
 			dataProviderActiveTab : function(e)
 			{
 

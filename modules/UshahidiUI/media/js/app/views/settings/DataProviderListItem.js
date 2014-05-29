@@ -7,9 +7,26 @@
  * @license    https://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License Version 3 (AGPL3)
  */
 
-define(['App','handlebars', 'marionette', 'text!templates/settings/DataProviderListItem.html'],
-	function(App,Handlebars, Marionette, template)
+define(['App','handlebars', 'marionette', 'alertify', 'text!templates/settings/DataProviderListItem.html'],
+	function(App,Handlebars, Marionette, alertify, template)
 	{
+		var updateConfig = function (configModel, providerModel)
+		{
+			configModel.get('providers')[providerModel.id] = providerModel.get('enabled');
+			configModel.save().done(function (/* model, response, options*/)
+				{
+					ddt.log('DPListItem', 'model', providerModel.get('name'), providerModel.get('enabled'));
+					alertify.success(providerModel.get('name') + (providerModel.get('enabled') ? ' enabled!' : ' disabled!'));
+				})
+			.fail(function (response /*, xhr, options*/)
+				{
+					alertify.error('Unable to update provider, please try again.');
+					if (response.errors) {
+						ddt.log('debug', response.errors);
+					}
+				});
+		}
+
 		//ItemView provides some default rendering logic
 		return Marionette.ItemView.extend(
 		{
@@ -21,25 +38,36 @@ define(['App','handlebars', 'marionette', 'text!templates/settings/DataProviderL
 			// Value to track if checkbox for this post has been selected
 			selected : false,
 			events: {
-				'click .js-provider-status' : 'disableCard'
+				'click .js-provider-status' : 'toggleStatus'
 			},
 
 			modelEvents: {
 				'change': 'render'
 			},
 
-			disableCard : function (e)
+			initialize : function (options)
+			{
+				this.configModel = options.configModel;
+			},
+
+			toggleStatus : function (e)
 			{
 				e.preventDefault();
 
-				this.$el.toggleClass('disabled');
+				var $el = this.$('.data-provider-card');
 
-				if ( this.$el.hasClass('disabled') ) {
+				$el.toggleClass('disabled');
+
+				if ( $el.hasClass('disabled') ) {
+					this.model.set('enabled', false);
 					this.$('.js-provider-status').text('Enable');
 				}
 				else {
+					this.model.set('enabled', true);
 					this.$('.js-provider-status').text('Disable');
 				}
+
+				updateConfig(this.configModel, this.model);
 			}
 		});
 	});

@@ -40,7 +40,11 @@ define(['jquery', 'underscore', 'backbone', 'App'],
 					schema[index] = {
 						type : inputFieldMap[element.input] ? inputFieldMap[element.input] : 'Text',
 						title : element.label,
-						options : element.options
+						options : element.options,
+						help : element.description,
+						editorAttrs : {
+							placeholder : element.placeholder
+						}
 					};
 				});
 

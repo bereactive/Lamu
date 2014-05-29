@@ -24,6 +24,11 @@ $plugin = array(
 
 	// Option Key and Label
 	'options' => array(
+		'intro_text' => array(
+			'label' => '',
+			'input' => 'read-only-text',
+			'description' => 'In order to receive reports by email, please input your email account settings below'
+		),
 		'incoming_type' => array(
 			'label' => 'Incoming Server Type',
 			'input' => 'radio',
@@ -33,27 +38,31 @@ $plugin = array(
 		'incoming_server' => array(
 			'label' => 'Incoming Server',
 			'input' => 'text',
-			'description' => ''
+			'description' => '',
+			'description' => 'Examples: mail.yourwebsite.com, imap.gmail.com, pop.gmail.com',
 		),
 		'incoming_port' => array(
 			'label' => 'Incoming Server Port',
 			'input' => 'text',
-			'description' => ''
+			'description' => 'Common ports: 110 (POP3), 143 (IMAP), 995 (POP3 with SSL), 993 (IMAP with SSL)'
 		),
 		'incoming_security' => array(
-			'label' => 'Incoming Server Security (SSL, TLS, None)',
-			'input' => 'text',
-			'description' => ''
+			'label' => 'Incoming Server Security',
+			'input' => 'radio',
+			'description' => '',
+			'options' => array('None', 'SSL', 'TLS')
 		),
 		'incoming_username' => array(
 			'label' => 'Incoming Username',
 			'input' => 'text',
-			'description' => ''
+			'description' => '',
+			'placeholder' => 'Email account username'
 		),
 		'incoming_password' => array(
 			'label' => 'Incoming Password',
 			'input' => 'text',
-			'description' => ''
+			'description' => '',
+			'placeholder' => 'Email account password'
 		),
 		'outgoing_type' => array(
 			'label' => 'Outgoing Server Type',
@@ -64,15 +73,15 @@ $plugin = array(
 		'outgoing_server' => array(
 			'label' => 'Outgoing Server',
 			'input' => 'text',
-			'description' => ''
+			'description' => 'Examples: smtp.yourhost.com, smtp.gmail.com',
 		),
 		'outgoing_port' => array(
 			'label' => 'Outgoing Server Port',
 			'input' => 'text',
-			'description' => ''
+			'description' => 'Common ports: 25 (SMTP default), 465 (SMTP with SSL)'
 		),
 		'outgoing_security' => array(
-			'label' => 'Outgoing Server Security (SSL, TLS, None)',
+			'label' => 'Outgoing Server Security',
 			'input' => 'radio',
 			'description' => '',
 			'options' => array('None', 'SSL', 'TLS')
@@ -80,17 +89,19 @@ $plugin = array(
 		'outgoing_username' => array(
 			'label' => 'Outgoing Username',
 			'input' => 'text',
-			'description' => ''
+			'description' => '',
+			'placeholder' => 'Email account username'
 		),
 		'outgoing_password' => array(
 			'label' => 'Outgoing Password',
 			'input' => 'text',
-			'description' => ''
+			'description' => '',
+			'placeholder' => 'Email account password'
 		),
 		'from_name' => array(
 			'label' => 'Email Sender Name',
 			'input' => 'text',
-			'description' => ''
+			'description' => 'Appears in the \'from:\' field on outgoing emails'
 		),
 	),
 

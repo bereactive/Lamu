@@ -56,6 +56,7 @@ abstract class DataProvider_Core {
 		if (self::_valid_provider($params, $name))
 		{
 			self::$_providers[$name] = $params;
+			self::$_providers[$name]['id']= $name;
 		}
 	}
 

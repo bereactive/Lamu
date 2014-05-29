@@ -24,21 +24,10 @@ define(['App','handlebars', 'marionette', 'text!templates/settings/DataProviderL
 				'click .js-provider-status' : 'disableCard'
 			},
 
-			initialize: function()
-			{
-				// Refresh this view when there is a change in this model
-				this.listenTo(this.model,'change', this.render);
-			},
-
 			modelEvents: {
-				'sync': 'render'
+				'change': 'render'
 			},
 
-			showEdit : function (e)
-			{
-				e.preventDefault();
-				App.vent.trigger('data-provider:edit', this.model);
-			},
 			disableCard : function (e)
 			{
 				e.preventDefault();

@@ -35,7 +35,7 @@ define(['jquery', 'underscore', 'backbone', 'App'],
 			{
 				var schema = {};
 
-				_.each(this.get('form'), function (element, index) {
+				_.each(this.get('options'), function (element, index) {
 					schema['config-'+index] = {
 						type : inputFieldMap[element.input] ? inputFieldMap[element.input] : 'Text',
 						title : element.label
@@ -46,43 +46,9 @@ define(['jquery', 'underscore', 'backbone', 'App'],
 
 				return schema;
 			},
-			// Overriding the parse method to handle nested JSON config
-			parse : function (data)
+			defaults : function ()
 			{
-				var key;
-
-				ddt.log('DataProviderModel', 'parse() data', data);
-
-				for (key in data.config)
-				{
-					if( data.config.hasOwnProperty( key ) )
-					{
-						data['config-'+key] = data.config[key];
-					}
-				}
-				delete data.config;
-
-				return data;
-			},
-			// Overriding toJSON to reverse parsing of config
-			toJSON : function ()
-			{
-				var data = Backbone.Model.prototype.toJSON.call(this),
-					config = {},
-					key;
-
-				for (key in data)
-				{
-					if (data.hasOwnProperty( key ) &&
-						key.substr(0, 7) === 'config-')
-					{
-						config[key.substr(7)] = data[key];
-						delete data[key];
-					}
-				}
-				data.config = config;
-
-				return data;
+				enabled : false
 			}
 		});
 

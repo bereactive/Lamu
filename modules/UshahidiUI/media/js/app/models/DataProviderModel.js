@@ -47,7 +47,7 @@ define(['jquery', 'underscore', 'backbone', 'App'],
 
 				return schema;
 			},
-			defaults : function ()
+			defaults :
 			{
 				enabled : false
 			}

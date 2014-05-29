@@ -638,18 +638,24 @@ define(['jquery', 'App', 'backbone', 'marionette',
 					return;
 				}
 
-				require(['views/settings/DataProviderLayout', 'views/settings/DataProviderConfig', 'text!templates/settings/DataProviderConfigSms.html', 'handlebars'],
-					function(DataProviderLayout, DataProviderConfigView, template, Handlebars)
+				require(['views/settings/DataProviderLayout', 'views/settings/DataProviderConfig', 'models/ConfigModel', 'text!templates/settings/DataProviderConfigSms.html', 'handlebars'],
+					function(DataProviderLayout, DataProviderConfigView, ConfigModel, template, Handlebars)
 				{
 					App.vent.trigger('page:change', 'messages/settings');
 
 					var
-						dpLayout = that._setupDataProviderLayout(DataProviderLayout);
+						dpLayout = that._setupDataProviderLayout(DataProviderLayout),
+						dpModel = App.Collections.DataProviders.get('smssync'),
+						dpConfig = new ConfigModel({'@group': 'data-provider'});
 
-					dpLayout.main.show(new DataProviderConfigView({
-						model : App.Collections.DataProviders.get(id),
-						template: Handlebars.compile(template)
-					}));
+					dpConfig.fetch().done(function ()
+					{
+						dpLayout.main.show(new DataProviderConfigView({
+							dataProviderModel : dpModel,
+							configModel : dpConfig,
+							template: Handlebars.compile(template)
+						}));
+					});
 				});
 			}
 	});

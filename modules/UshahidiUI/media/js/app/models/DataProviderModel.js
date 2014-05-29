@@ -20,7 +20,8 @@ define(['jquery', 'underscore', 'backbone', 'App'],
 			'select' : 'Select',
 			'location' : 'Location',
 			'number' : 'Number',
-			'file' : 'Text'
+			'file' : 'Text',
+			'read-only-text' : 'ReadOnlyText'
 		},
 
 		DataProviderModel = Backbone.Model.extend(

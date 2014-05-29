@@ -20,13 +20,7 @@ class Ushahidi_Repository_Config implements ConfigRepository
 			'site',
 			'test',
 			'features',
-			'data-provider',
-			// @todo stop hard coding these
-			'data-provider-smssync',
-			'data-provider-frontlinesms',
-			'data-provider-twilio',
-			'data-provider-nexmo',
-			'data-provider-email'
+			'data-provider'
 		);
 	}
 

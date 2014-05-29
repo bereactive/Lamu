@@ -615,7 +615,7 @@ define(['jquery', 'App', 'backbone', 'marionette',
 					var
 						dpLayout = that._setupDataProviderLayout(DataProviderLayout),
 						dpModel = App.Collections.DataProviders.get(id),
-						dpConfig = new ConfigModel({'@group': 'data-provider-' + id});
+						dpConfig = new ConfigModel({'@group': 'data-provider'});
 
 					dpConfig.fetch().done(function ()
 					{

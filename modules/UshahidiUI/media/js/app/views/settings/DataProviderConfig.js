@@ -24,10 +24,9 @@ define(['App', 'marionette', 'handlebars', 'underscore', 'alertify', 'text!templ
 				// Set up the form
 				this.form = new BackboneForm({
 					schema: this.dataProviderModel.schema(),
-					model: this.configModel,
+					data: this.configModel.get(this.dataProviderModel.id),
 					idPrefix : 'config-',
 					className : 'data-provider-config-form',
-					//fieldsets : _.result(this.model, 'fieldsets')
 					});
 			},
 			onDomRefresh : function()
@@ -48,35 +47,32 @@ define(['App', 'marionette', 'handlebars', 'underscore', 'alertify', 'text!templ
 
 				e.preventDefault();
 
-				errors = this.form.commit({ validate: true });
+				this.configModel.set(this.dataProviderModel.id, this.form.getValue());
 
-				if (! errors)
+				request = this.configModel.save();
+				if (request)
 				{
-					request = this.configModel.save();
-					if (request)
-					{
-						request
-							.done(function (/*model, response, options*/)
+					request
+						.done(function (/*model, response, options*/)
+							{
+								alertify.success('Configuration saved.');
+								App.appRouter.navigate('messages/settings', { trigger : true });
+							})
+						.fail(function (response /*, xhr, options*/)
+							{
+								alertify.error('Unable to save configuration, please try again.');
+								// validation error
+								if (response.errors)
 								{
-									alertify.success('Configuration saved.');
-									App.appRouter.navigate('messages/settings', { trigger : true });
-								})
-							.fail(function (response /*, xhr, options*/)
-								{
-									alertify.error('Unable to save configuration, please try again.');
-									// validation error
-									if (response.errors)
-									{
-										// @todo Display this error somehow
-										console.log(response.errors);
-									}
-								});
-					}
-					else
-					{
-						alertify.error('Unable to save configuration, please try again.');
-						console.log(this.configModel.validationError);
-					}
+									// @todo Display this error somehow
+									console.log(response.errors);
+								}
+							});
+				}
+				else
+				{
+					alertify.error('Unable to save configuration, please try again.');
+					console.log(this.configModel.validationError);
 				}
 			},
 		});

@@ -15,7 +15,6 @@ define(['App','handlebars', 'marionette', 'alertify', 'text!templates/settings/D
 			configModel.get('providers')[providerModel.id] = providerModel.get('enabled');
 			configModel.save().done(function (/* model, response, options*/)
 				{
-					ddt.log('DPListItem', 'model', providerModel.get('name'), providerModel.get('enabled'));
 					alertify.success(providerModel.get('name') + (providerModel.get('enabled') ? ' enabled!' : ' disabled!'));
 				})
 			.fail(function (response /*, xhr, options*/)

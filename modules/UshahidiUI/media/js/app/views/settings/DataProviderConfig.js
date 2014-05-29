@@ -7,23 +7,28 @@
  * @license    https://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License Version 3 (AGPL3)
  */
 
-define(['App', 'marionette', 'handlebars', 'underscore', 'text!templates/settings/DataProviderConfig.html', 'forms/UshahidiForms'],
-	function(App, Marionette, Handlebars, _, template, BackboneForm)
+define(['App', 'marionette', 'handlebars', 'underscore', 'alertify', 'text!templates/settings/DataProviderConfig.html', 'forms/UshahidiForms'],
+	function(App, Marionette, Handlebars, _, alertify, template, BackboneForm)
 	{
 		return Marionette.CompositeView.extend(
 		{
 			template: Handlebars.compile(template),
-			initialize: function ()
+			events: {
+				'submit form' : 'formSubmitted'
+			},
+			initialize: function (options)
 			{
+				this.configModel = options.configModel;
+				this.dataProviderModel = options.dataProviderModel;
+
 				// Set up the form
 				this.form = new BackboneForm({
-					model: this.model,
-					idPrefix : 'post-',
-					className : 'create-post-form',
+					schema: this.dataProviderModel.schema(),
+					model: this.configModel,
+					idPrefix : 'config-',
+					className : 'data-provider-config-form',
 					//fieldsets : _.result(this.model, 'fieldsets')
 					});
-
-				ddt.log('DataProviderConfig', 'model', this.model);
 			},
 			onDomRefresh : function()
 			{
@@ -34,6 +39,45 @@ define(['App', 'marionette', 'handlebars', 'underscore', 'text!templates/setting
 				this.form.$el.attr('id', 'data-provider-config-form');
 
 				this.$('.js-form').append(this.form.el);
+			},
+			formSubmitted : function (e)
+			{
+				var that = this,
+					errors,
+					request;
+
+				e.preventDefault();
+
+				errors = this.form.commit({ validate: true });
+
+				if (! errors)
+				{
+					request = this.configModel.save();
+					if (request)
+					{
+						request
+							.done(function (/*model, response, options*/)
+								{
+									alertify.success('Configuration saved.');
+									App.appRouter.navigate('messages/settings', { trigger : true });
+								})
+							.fail(function (response /*, xhr, options*/)
+								{
+									alertify.error('Unable to save configuration, please try again.');
+									// validation error
+									if (response.errors)
+									{
+										// @todo Display this error somehow
+										console.log(response.errors);
+									}
+								});
+					}
+					else
+					{
+						alertify.error('Unable to save configuration, please try again.');
+						console.log(this.configModel.validationError);
+					}
+				}
 			},
 		});
 	});

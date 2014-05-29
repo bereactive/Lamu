@@ -607,16 +607,23 @@ define(['jquery', 'App', 'backbone', 'marionette',
 					return;
 				}
 
-				require(['views/settings/DataProviderLayout', 'views/settings/DataProviderConfig'], function(DataProviderLayout, DataProviderConfigView)
+				require(['views/settings/DataProviderLayout', 'views/settings/DataProviderConfig', 'models/ConfigModel'],
+					function(DataProviderLayout, DataProviderConfigView, ConfigModel)
 				{
 					App.vent.trigger('page:change', 'messages/settings');
 
 					var
-						dpLayout = that._setupDataProviderLayout(DataProviderLayout);
+						dpLayout = that._setupDataProviderLayout(DataProviderLayout),
+						dpModel = App.Collections.DataProviders.get(id),
+						dpConfig = new ConfigModel({'@group': 'data-provider-' + id});
 
-					dpLayout.main.show(new DataProviderConfigView({
-						model : App.Collections.DataProviders.get(id)
-					}));
+					dpConfig.fetch().done(function ()
+					{
+						dpLayout.main.show(new DataProviderConfigView({
+							dataProviderModel : dpModel,
+							configModel : dpConfig
+						}));
+					});
 				});
 			},
 

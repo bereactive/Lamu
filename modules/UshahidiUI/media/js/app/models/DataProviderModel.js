@@ -36,9 +36,10 @@ define(['jquery', 'underscore', 'backbone', 'App'],
 				var schema = {};
 
 				_.each(this.get('options'), function (element, index) {
-					schema['config-'+index] = {
+					schema[index] = {
 						type : inputFieldMap[element.input] ? inputFieldMap[element.input] : 'Text',
-						title : element.label
+						title : element.label,
+						options : element.options
 					};
 				});
 

@@ -41,9 +41,7 @@ define(['App', 'marionette', 'handlebars', 'underscore', 'alertify', 'text!templ
 			},
 			formSubmitted : function (e)
 			{
-				var that = this,
-					errors,
-					request;
+				var request;
 
 				e.preventDefault();
 

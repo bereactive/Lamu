@@ -7,7 +7,7 @@
  * @license	https://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License Version 3 (AGPL3)
  */
 
-define(['jquery', 'App', 'backbone', 'marionette',
+define(['jquery', 'App', 'backbone', 'marionette', 'underscore',
 	'controllers/ModalController',
 
 	'views/AppLayout',
@@ -26,10 +26,9 @@ define(['jquery', 'App', 'backbone', 'marionette',
 	'collections/UserCollection',
 	'collections/DataProviderCollection',
 
-	'models/UserModel',
-	'models/DataProviderModel'
+	'models/UserModel'
 	],
-	function($, App, Backbone, Marionette,
+	function($, App, Backbone, Marionette, _,
 		ModalController,
 
 		AppLayout,
@@ -48,8 +47,7 @@ define(['jquery', 'App', 'backbone', 'marionette',
 		UserCollection,
 		DataProviderCollection,
 
-		UserModel,
-		DataProviderModel
+		UserModel
 		)
 	{
 		return Backbone.Marionette.Controller.extend(
@@ -435,19 +433,21 @@ define(['jquery', 'App', 'backbone', 'marionette',
 			 */
 			_setupDataProviderLayout : function (DataProviderLayout)
 			{
-				var that = this;
+				var that = this,
+					dpTypes,
+					dpLayout;
 
 				if (! this._dpLayout)
 				{
-					var dpTypes = new Backbone.Collection([
-								{ id: 'sms', name: 'SMS', icon: 'mobile' },
-								{ id: 'email', name: 'Email', icon: 'envelope-o' },
-								{ id: 'twitter', name: 'Twitter', icon: 'twitter' },
-								{ id: 'rss', name: 'RSS', icon: 'rss' }
-							]),
-						dpLayout = new DataProviderLayout({
-							collection : dpTypes
-						});
+					dpTypes = new Backbone.Collection([
+							{ id: 'sms', name: 'SMS', icon: 'mobile' },
+							{ id: 'email', name: 'Email', icon: 'envelope-o' },
+							{ id: 'twitter', name: 'Twitter', icon: 'twitter' },
+							{ id: 'rss', name: 'RSS', icon: 'rss' }
+						]),
+					dpLayout = new DataProviderLayout({
+						collection : dpTypes
+					});
 
 					this._dpLayout = dpLayout;
 				}
@@ -527,7 +527,7 @@ define(['jquery', 'App', 'backbone', 'marionette',
 			},
 
 			// FIXME: temp controller for sms hard coding
-			dataProvidersConfigSMS : function(id)
+			dataProvidersConfigSMS : function(/*id*/)
 			{
 				var that = this;
 

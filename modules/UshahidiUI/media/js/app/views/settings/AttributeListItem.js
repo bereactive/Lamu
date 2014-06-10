@@ -10,6 +10,8 @@
 define(['underscore', 'handlebars', 'marionette', 'forms/UshahidiForms', 'text!templates/settings/AttributeListItem.html'],
 	function(_, Handlebars, Marionette, BackboneForm, template)
 	{
+		var valueToString = function(item) { return item.value; };
+
 		return Marionette.ItemView.extend(
 		{
 			template: Handlebars.compile(template),
@@ -81,7 +83,9 @@ define(['underscore', 'handlebars', 'marionette', 'forms/UshahidiForms', 'text!t
 					case 'Select':
 						fields.options = {
 							title: 'Possible Options',
-							type: 'TextArea'
+							type : 'List',
+							itemToString : valueToString,
+							itemType : 'Text'
 						};
 					break;
 				}

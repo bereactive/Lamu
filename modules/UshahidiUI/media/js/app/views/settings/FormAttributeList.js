@@ -74,7 +74,7 @@ define(['marionette', 'handlebars', 'underscore', 'jquery', 'views/settings/Attr
 			{
 				var index = $el.index(),
 					model = new FormAttributeModel({
-						input : $el.data('attribute-input'),
+						input : $el.data('attribute-input').toLowerCase(), // @todo fix this at the server end.. match client input names
 						type : $el.data('attribute-type'),
 						priority : index,
 						form_group_id : this.form_group_id

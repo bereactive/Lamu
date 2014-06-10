@@ -69,16 +69,14 @@ define(['underscore', 'handlebars', 'marionette', 'forms/UshahidiForms', 'text!t
 					input = input.charAt(0).toUpperCase() + input.substr(1);
 				}
 
+				// Default value should use same input as the current attribute
+				fields.default = {
+					title: 'Default value',
+					type: input,
+					options: options
+				};
+
 				switch (input) {
-					case 'DateTime':
-						fields.format = 'Text';
-					break;
-					case 'Location':
-						fields.default = {
-							title: 'Default Location',
-							type: 'Text'
-						};
-					break;
 					case 'Radio':
 					case 'Select':
 						fields.options = {

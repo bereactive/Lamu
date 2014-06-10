@@ -46,11 +46,11 @@ define(['underscore', 'handlebars', 'marionette', 'forms/UshahidiForms', 'text!t
 
 			initialize : function (/*options*/)
 			{
-				ddt.log('debug', 'form attrs', this.model.attributes);
+				ddt.log('debug', 'form attrs', this.model.toJSON());
 
-				var input = this.model.attributes.input,
-					options = this.model.attributes.options,
-					value = this.model.attributes.label,
+				var input = this.model.get('input'),
+					options = this.model.get('options') || {},
+					value = this.model.get('label'),
 					fields = {
 						name: 'Text'
 					};

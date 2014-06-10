@@ -599,7 +599,8 @@ define(['jquery', 'App', 'backbone', 'marionette', 'underscore', 'alertify',
 						]),
 						formAttributes = new FormAttributeCollection(_.values(form.formAttributes)),
 						formAttributeList = new FormAttributeList({
-							collection : formAttributes
+							collection : formAttributes,
+							form_group_id : form.get('groups')[0].id // @todo check this exists
 						});
 
 					that.layout.mainRegion.show(formEditor);

@@ -23,9 +23,11 @@ define(['marionette', 'handlebars', 'underscore', 'jquery', 'views/settings/Attr
 
 			emptyView: EmptyView,
 
-			initialize : function ()
+			initialize : function (options)
 			{
 				this.on('sortable:stop', this.handleSortableStop, this);
+
+				this.form_group_id = options.form_group_id;
 			},
 
 			onDomRefresh : function ()
@@ -74,7 +76,8 @@ define(['marionette', 'handlebars', 'underscore', 'jquery', 'views/settings/Attr
 					model = new FormAttributeModel({
 						input : $el.data('attribute-input'),
 						type : $el.data('attribute-type'),
-						priority : index
+						priority : index,
+						form_group_id : this.form_group_id
 					});
 
 				model.set('label', 'New ' + model.get('input'));

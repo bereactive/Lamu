@@ -50,9 +50,8 @@ define(['underscore', 'handlebars', 'marionette', 'forms/UshahidiForms', 'text!t
 
 				var input = this.model.get('input'),
 					options = this.model.get('options') || {},
-					value = this.model.get('label'),
 					fields = {
-						name: 'Text',
+						label: 'Text',
 						key: 'Text' // @todo auto-generate key
 					};
 
@@ -100,9 +99,7 @@ define(['underscore', 'handlebars', 'marionette', 'forms/UshahidiForms', 'text!t
 				try {
 					this.form = new BackboneForm({
 						schema: fields,
-						data: {
-							name: value
-						}
+						data: this.model.toJSON()
 					});
 				} catch (err) {
 					ddt.log('debug', 'could not create form for attr', err);
@@ -153,18 +150,13 @@ define(['underscore', 'handlebars', 'marionette', 'forms/UshahidiForms', 'text!t
 			{
 				e.preventDefault();
 
-				var raw = this.form.$el.serializeArray(),
-					data = {};
+				var data = this.form.getValue();
 
-				_.each(raw, function(input)
-				{
-					data[input.name] = input.value;
-				});
+				ddt.log('debug', 'form data', data);
 
-				if (data.name) {
-					this.model.set('label', data.name);
-					this.model.save();
-				}
+				this.model.set(_.pick(data, 'label', 'key', 'options', 'default', 'format'));
+				ddt.log('debug', 'updated model', this.model.toJSON());
+				this.model.save();
 			}
 		});
 	});

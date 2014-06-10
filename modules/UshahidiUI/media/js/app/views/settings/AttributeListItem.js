@@ -52,7 +52,8 @@ define(['underscore', 'handlebars', 'marionette', 'forms/UshahidiForms', 'text!t
 					options = this.model.get('options') || {},
 					value = this.model.get('label'),
 					fields = {
-						name: 'Text'
+						name: 'Text',
+						key: 'Text' // @todo auto-generate key
 					};
 
 				if (!input) {

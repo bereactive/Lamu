@@ -17,7 +17,21 @@ define(['underscore', 'handlebars', 'marionette', 'forms/UshahidiForms', 'text!t
 			className: 'list-view-attribute',
 
 			form: null,
-			attributes : {},
+			attributes : function ()
+			{
+				var attributes = {
+					'data-attribute-type' : this.model.get('type'),
+					'data-attribute-input' : this.model.get('input'),
+				};
+
+				if (this.model.isNew()) {
+					attributes['data-attribute-new'] = true;
+				} else {
+					attributes['data-attribute-id'] = this.model.get('id');
+				}
+
+				return attributes;
+			},
 
 			modelEvents: {
 				'sync': 'render',
@@ -32,14 +46,6 @@ define(['underscore', 'handlebars', 'marionette', 'forms/UshahidiForms', 'text!t
 
 			initialize : function (/*options*/)
 			{
-				this.attributes['data-attribute-type'] = this.model.get('type');
-				this.attributes['data-attribute-input'] = this.model.get('input');
-				if (this.model.isNew()) {
-					this.attributes['data-attribute-new'] = true;
-				} else {
-					this.attributes['data-attribute-id'] = this.model.get('id');
-				}
-
 				ddt.log('debug', 'form attrs', this.model.attributes);
 
 				var input = this.model.attributes.input,

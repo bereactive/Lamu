@@ -105,7 +105,9 @@ class Model_Form_Attribute extends ORM implements Acl_Resource_Interface {
 					'select',
 					'radio',
 					'checkbox',
-					'file',
+					// todo: Backbone.Form doesn't have a File input, and this is done via media uploads.
+					//       Do we drop this entirely in favor of media uploads, or ... ?
+					// 'file',
 					'date',
 					'datetime',
 					'location',

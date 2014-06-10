@@ -403,6 +403,20 @@ define(['jquery', 'App', 'backbone', 'marionette', 'underscore', 'alertify',
 				});
 			},
 			/**
+			 * Shows a form listing
+			 */
+			forms : function ()
+			{
+				var that = this;
+				require(['views/settings/FormList'], function(FormList)
+				{
+					App.vent.trigger('page:change', 'forms');
+					that.layout.mainRegion.show(new FormList({
+						collection : App.Collections.Forms
+					}));
+				});
+			},
+			/**
 			 * Set up data provider layout
 			 * @todo refactor to better handle loading dplayout
 			 */
@@ -530,6 +544,71 @@ define(['jquery', 'App', 'backbone', 'marionette', 'underscore', 'alertify',
 							template: Handlebars.compile(template)
 						}));
 					});
+				});
+			},
+			/**
+			 * Show a post wizard for an editing a post form
+			 * @param  String form id
+			 */
+			formEdit : function(id)
+			{
+				var that = this;
+				require(['views/settings/FormEditor', 'views/settings/AvailableAttributeList', 'views/settings/FormAttributeList', 'collections/FormAttributeCollection'],
+					function(FormEditor, AvailableAttributeList, FormAttributeList, FormAttributeCollection)
+				{
+					App.vent.trigger('page:change', 'forms');
+					var form = App.Collections.Forms.get(id),
+						formEditor = new FormEditor({
+							model : form
+						}),
+						availableAttributes = new FormAttributeCollection([
+							{
+								input: 'Text',
+								type: 'varchar'
+							},
+							{
+								input: 'TextArea',
+								type: 'text'
+							},
+							{
+								input: 'Select',
+								type: 'varchar', // what about numeric selections?
+								options: []
+							},
+							{
+								input: 'Radio',
+								type: 'varchar', // not totally sure about this
+								options: []
+							},
+							{
+								input: 'Checkbox',
+								type: 'varchar' // not totally sure about this
+							},
+							{
+								input: 'Date',
+								type: 'datetime'
+							},
+							{
+								input: 'DateTime',
+								type: 'datetime'
+							},
+							{
+								input: 'Location',
+								type: 'point'
+							}
+						]),
+						formAttributes = new FormAttributeCollection(_.values(form.formAttributes)),
+						formAttributeList = new FormAttributeList({
+							collection : formAttributes
+						});
+
+					that.layout.mainRegion.show(formEditor);
+
+					formEditor.formAttributes.show(formAttributeList);
+					formEditor.availableAttributes.show(new AvailableAttributeList({
+						collection : availableAttributes,
+						sortableList : formAttributeList
+					}));
 				});
 			}
 	});

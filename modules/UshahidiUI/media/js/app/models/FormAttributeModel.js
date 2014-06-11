@@ -14,6 +14,11 @@ define(['backbone', 'modules/config'],
 		FormAttributeModel = Backbone.Model.extend(
 		{
 			urlRoot: config.get('apiurl') + '/attributes',
+			defaults : {
+				cardinality: 1,
+				required: false,
+				options: {}
+			},
 			toString : function ()
 			{
 				return this.get('label');
@@ -25,7 +30,12 @@ define(['backbone', 'modules/config'],
 					fields = {
 						label: 'Text',
 						key: 'Text', // @todo auto-generate key
-						required: 'Checkbox'
+						required: 'Checkbox',
+						cardinality: {
+							title: 'Allowed entries',
+							type: 'Number',
+							help: 'Number of entries allowed in this field. 0 is unlimited.'
+						}
 					};
 
 				if (! input) {

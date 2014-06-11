@@ -7,8 +7,8 @@
  * @license    https://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License Version 3 (AGPL3)
  */
 
-define(['underscore', 'handlebars', 'marionette', 'forms/UshahidiForms', 'text!templates/settings/AttributeListItem.html'],
-	function(_, Handlebars, Marionette, BackboneForm, template)
+define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiForms', 'text!templates/settings/AttributeListItem.html'],
+	function(_, Handlebars, Marionette, alertify, BackboneForm, template)
 	{
 		return Marionette.ItemView.extend(
 		{
@@ -41,6 +41,7 @@ define(['underscore', 'handlebars', 'marionette', 'forms/UshahidiForms', 'text!t
 			events: {
 				'click .js-edit-field' : 'editField',
 				'click .js-cancel-edit' : 'cancelEdit',
+				'click .js-delete-field' : 'deleteField',
 				'submit form' : 'saveField'
 			},
 
@@ -94,20 +95,16 @@ define(['underscore', 'handlebars', 'marionette', 'forms/UshahidiForms', 'text!t
 			{
 				e.preventDefault();
 
-				var $section = this.$(e.currentTarget).closest('section');
-
-				// show the form, hide the section
-				$section.add(this.form.$el).toggleClass('hide');
+				//  hide the section
+				this.form.$el.toggleClass('hide');
 			},
 
 			cancelEdit : function(e)
 			{
 				e.preventDefault();
 
-				var $section = this.$(e.currentTarget).closest('form').prev('section');
-
-				// show the section, hide the form
-				$section.add(this.form.$el).toggleClass('hide');
+				//  hide the form
+				this.form.$el.toggleClass('hide');
 			},
 
 			saveField : function(e)
@@ -121,6 +118,35 @@ define(['underscore', 'handlebars', 'marionette', 'forms/UshahidiForms', 'text!t
 				this.model.set(_.pick(data, 'label', 'key', 'options', 'default', 'format', 'required'));
 				ddt.log('debug', 'updated model', this.model.toJSON());
 				this.model.save();
+			},
+
+			deleteField: function(e)
+			{
+				var that = this;
+				e.preventDefault();
+				alertify.confirm('Are you sure you want to delete?', function(e)
+				{
+					if (e)
+					{
+						that.model
+							.destroy({
+								// Wait till server responds before destroying model
+								wait: true
+							})
+							.done(function()
+							{
+								alertify.success('Field has been deleted');
+							})
+							.fail(function ()
+							{
+								alertify.error('Unable to delete field, please try again');
+							});
+					}
+					else
+					{
+						alertify.log('Delete cancelled');
+					}
+				});
 			}
 		});
 	});

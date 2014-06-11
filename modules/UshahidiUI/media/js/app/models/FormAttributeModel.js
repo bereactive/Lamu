@@ -62,6 +62,7 @@ define(['backbone', 'modules/config'],
 				switch (input) {
 					case 'Radio':
 					case 'Select':
+					case 'Checkboxes':
 						fields.options = {
 							title: 'Possible Options',
 							type : 'List',

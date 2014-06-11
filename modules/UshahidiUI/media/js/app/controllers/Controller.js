@@ -563,36 +563,59 @@ define(['jquery', 'App', 'backbone', 'marionette', 'underscore', 'alertify',
 						}),
 						availableAttributes = new FormAttributeCollection([
 							{
+								label: 'Text',
 								input: 'Text',
 								type: 'varchar'
 							},
 							{
+								label: 'TextArea',
 								input: 'TextArea',
 								type: 'text'
 							},
 							{
+								label: 'Number (Decimal)',
+								input: 'Number',
+								type: 'decimal'
+							},
+							{
+								label: 'Number (Integer)',
+								input: 'Number',
+								type: 'integer'
+							},
+							{
+								label: 'Select',
 								input: 'Select',
 								type: 'varchar', // what about numeric selections?
 								options: []
 							},
 							{
+								label: 'Radio',
 								input: 'Radio',
 								type: 'varchar', // not totally sure about this
 								options: []
 							},
 							{
+								label: 'Checkbox',
 								input: 'Checkbox',
 								type: 'varchar' // not totally sure about this
 							},
 							{
+								label: 'Checkboxes',
+								input: 'Checkboxes',
+								type: 'varchar' // not totally sure about this
+							},
+							{
+								label: 'Date',
 								input: 'Date',
 								type: 'datetime'
 							},
 							{
+								label: 'DateTime',
 								input: 'DateTime',
 								type: 'datetime'
 							},
 							{
+								label: 'Location',
 								input: 'Location',
 								type: 'point'
 							}

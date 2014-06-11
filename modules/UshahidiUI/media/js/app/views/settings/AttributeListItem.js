@@ -10,8 +10,6 @@
 define(['underscore', 'handlebars', 'marionette', 'forms/UshahidiForms', 'text!templates/settings/AttributeListItem.html'],
 	function(_, Handlebars, Marionette, BackboneForm, template)
 	{
-		var valueToString = function(item) { return item.value; };
-
 		return Marionette.ItemView.extend(
 		{
 			template: Handlebars.compile(template),
@@ -48,64 +46,28 @@ define(['underscore', 'handlebars', 'marionette', 'forms/UshahidiForms', 'text!t
 
 			initialize : function (/*options*/)
 			{
-				ddt.log('debug', 'form attrs', this.model.toJSON());
-
-				var input = this.model.get('input'),
-					options = this.model.get('options') || {},
-					fields = {
-						label: 'Text',
-						key: 'Text' // @todo auto-generate key
-					};
-
-				if (!input) {
-					return ddt.trace('debug', 'invalid form attribute');
-				}
-
-				// todo: stop reformatting input types between server/client
-				if (input === 'textarea') {
-					input = 'TextArea';
-				} else if (input === 'datetime') {
-					input = 'DateTime';
-				} else {
-					// JS equivalent of PHP's ucfirst()
-					input = input.charAt(0).toUpperCase() + input.substr(1);
-				}
-
-				// Default value should use same input as the current attribute
-				fields.default = {
-					title: 'Default value',
-					type: input,
-					options: options
-				};
-
-				switch (input) {
-					case 'Radio':
-					case 'Select':
-						fields.options = {
-							title: 'Possible Options',
-							type : 'List',
-							itemToString : valueToString,
-							itemType : 'Text'
-						};
-					break;
-				}
-
-				// todo: the preview field should be disabled, but some Backbone.Form
-				// editors don't place nice with editorAttrs using `{disabled: "disabled}`
-				// (Date, DateTime, and Location editors, possibly others)
-				fields.preview = {
-					type: input,
-					options: options
-				};
-
 				try {
 					this.form = new BackboneForm({
-						schema: fields,
-						data: this.model.toJSON()
+						model: this.model,
+						idPrefix : 'attribute-',
+						className : 'attribute-form',
 					});
 				} catch (err) {
 					ddt.log('debug', 'could not create form for attr', err);
 				}
+
+
+				// BackboneValidation.bind(this, {
+				// 	valid: function(/* view, attr */)
+				// 	{
+				// 		// Do nothing, displaying errors is handled by backbone-forms
+				// 	},
+				// 	invalid: function(/* view, attr, error */)
+				// 	{
+				// 		// Do nothing, displaying errors is handled by backbone-forms
+				// 	}
+				// });
+
 			},
 
 			onDomRefresh : function()
@@ -156,7 +118,7 @@ define(['underscore', 'handlebars', 'marionette', 'forms/UshahidiForms', 'text!t
 
 				ddt.log('debug', 'form data', data);
 
-				this.model.set(_.pick(data, 'label', 'key', 'options', 'default', 'format'));
+				this.model.set(_.pick(data, 'label', 'key', 'options', 'default', 'format', 'required'));
 				ddt.log('debug', 'updated model', this.model.toJSON());
 				this.model.save();
 			}

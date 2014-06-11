@@ -22,6 +22,7 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 				var attributes = {
 					'data-attribute-type' : this.model.get('type'),
 					'data-attribute-input' : this.model.get('input'),
+					'data-attribute-label' : this.model.get('label'),
 				};
 
 				if (this.model.isNew()) {

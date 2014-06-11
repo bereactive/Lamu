@@ -80,7 +80,7 @@ define(['marionette', 'handlebars', 'underscore', 'jquery', 'views/settings/Attr
 						form_group_id : this.form_group_id
 					});
 
-				model.set('label', 'New ' + model.get('input'));
+				model.set('label', 'New ' + $el.data('attribute-label'));
 
 				this.collection.add(model, { at : $el.index() });
 

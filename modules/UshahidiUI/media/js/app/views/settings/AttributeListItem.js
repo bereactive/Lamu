@@ -54,7 +54,7 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 						className : 'attribute-form',
 					});
 				} catch (err) {
-					ddt.log('debug', 'could not create form for attr', err);
+					ddt.log('Forms', 'could not create form for attr', err);
 				}
 
 
@@ -113,10 +113,10 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 
 				var data = this.form.getValue();
 
-				ddt.log('debug', 'form data', data);
+				ddt.log('Forms', 'form data', data);
 
 				this.model.set(_.pick(data, 'label', 'key', 'options', 'default', 'format', 'required'));
-				ddt.log('debug', 'updated model', this.model.toJSON());
+				ddt.log('Forms', 'updated model', this.model.toJSON());
 				this.model.save();
 			},
 

@@ -39,7 +39,7 @@ define(['backbone', 'modules/config'],
 					};
 
 				if (! input) {
-					return ddt.trace('debug', 'invalid form attribute');
+					return ddt.trace('Forms', 'invalid form attribute');
 				}
 
 				// todo: stop reformatting input types between server/client

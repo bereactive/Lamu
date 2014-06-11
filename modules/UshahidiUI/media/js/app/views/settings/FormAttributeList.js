@@ -110,6 +110,18 @@ define(['marionette', 'handlebars', 'underscore', 'jquery', 'views/settings/Attr
 				});
 
 				this.collection.sort();
+				this.collection.each(function (model) {
+					model.save()
+						.done(function()
+						{
+							// alertify.success('Order saved');
+						})
+						.fail(function ()
+						{
+							// alertify.error('Unable to delete field, please try again');
+						});
+				});
+
 			}
 
 		});

@@ -35,8 +35,7 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 			},
 
 			modelEvents: {
-				'sync': 'render',
-				'change': 'render'
+				'sync': 'render'
 			},
 
 			events: {
@@ -136,8 +135,9 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 				ddt.log('Forms', 'form data', data);
 
 				this.model.set(_.pick(data, 'label', 'options', 'default', 'format', 'required'));
-				ddt.log('Forms', 'updated model', this.model.toJSON());
-				this.model.save()
+				this.model.save({
+						wait: true
+					})
 					.done(function ()
 					{
 						alertify.success('Field saved');

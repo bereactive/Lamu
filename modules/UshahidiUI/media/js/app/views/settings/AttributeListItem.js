@@ -139,7 +139,15 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 
 				this.model.set(_.pick(data, 'label', 'key', 'options', 'default', 'format', 'required'));
 				ddt.log('Forms', 'updated model', this.model.toJSON());
-				this.model.save();
+				this.model.save()
+					.done(function ()
+					{
+						alertify.success('Field saved');
+					})
+					.fail(function ()
+					{
+						alertify.error('Unable to save field, please try again');
+					});
 			},
 
 			deleteField: function(e)

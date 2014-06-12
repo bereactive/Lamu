@@ -111,6 +111,12 @@ define(['marionette', 'handlebars', 'underscore', 'jquery', 'views/settings/Attr
 
 				this.collection.sort();
 				this.collection.each(function (model) {
+					// Skip new models when saving a reorder
+					if (model.isNew())
+					{
+						return;
+					}
+
 					model.save()
 						.done(function()
 						{

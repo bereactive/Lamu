@@ -25,8 +25,12 @@ define(['backbone', 'modules/config'],
 			},
 			schema : function ()
 			{
-				var input = this.get('input'),
-					options = this.get('options') || {},
+				var that = this,
+					input = this.get('input'),
+					options = function(callback, editor)
+					{
+						callback(that.get('options') || {});
+					},
 					fields = {
 						label: 'Text',
 						required: 'Checkbox',

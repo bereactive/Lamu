@@ -66,11 +66,11 @@ define(['backbone', 'modules/config'],
 					case 'Radio':
 					case 'Select':
 					case 'Checkboxes':
+						// @todo use a better editor here. List editor would be good but has issues
+						// https://github.com/powmedia/backbone-forms/pull/372
 						fields.options = {
 							title: 'Possible Options',
-							type : 'List',
-							itemToString : valueToString,
-							itemType : 'Text'
+							type: 'TextArea',
 						};
 					break;
 				}

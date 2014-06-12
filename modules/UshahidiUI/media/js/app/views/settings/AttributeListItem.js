@@ -47,17 +47,6 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 
 			initialize : function (/*options*/)
 			{
-				try {
-					this.form = new BackboneForm({
-						schema: this.model.schema(),
-						idPrefix : 'attribute-',
-						className : 'attribute-form',
-					});
-				} catch (err) {
-					ddt.log('Forms', 'could not create form for attr', err);
-				}
-
-
 				// BackboneValidation.bind(this, {
 				// 	valid: function(/* view, attr */)
 				// 	{
@@ -68,7 +57,6 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 				// 		// Do nothing, displaying errors is handled by backbone-forms
 				// 	}
 				// });
-
 			},
 
 			serializeData: function ()
@@ -94,8 +82,30 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 				return data;
 			},
 
+			buildForm: function ()
+			{
+				try {
+					this.form = new BackboneForm({
+						schema: this.model.schema(),
+						data: _.extend(this.model.toJSON(), {
+							preview : this.model.get('default')
+						}),
+						idPrefix : 'attribute-',
+						className : 'attribute-form',
+					});
+				} catch (err) {
+					ddt.log('Forms', 'could not create form for attr', err);
+				}
+			},
+
 			onDomRefresh : function()
 			{
+				// Create the form if we haven't yet
+				if (! this.form)
+				{
+					this.buildForm();
+				}
+
 				// Render the form and add it to the view
 				this.form.render();
 
@@ -108,10 +118,11 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 				// todo: use "submitButton: title" in Backbone.Form v0.15
 				$form.append('<button type="submit">Save</button>');
 
-				this.$('.js-form').addClass('hide');
-
 				// hide the field editor form until activated
-				this.$('.js-form').append($form);
+				this.$('.js-form')
+					.empty()
+					.addClass('hide')
+					.append($form);
 			},
 
 			toggleEdit : function(e)
@@ -120,7 +131,7 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 
 				// Reset the form data
 				this.form.setValue(_.extend(this.model.toJSON(), {
-					preview : this.model.get('default')
+					preview : this.model.get('default'),
 				}));
 				// Show/Hide the form
 				this.$('.js-form').toggleClass('hide');
@@ -133,6 +144,8 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 				var data = this.form.getValue();
 
 				ddt.log('Forms', 'form data', data);
+				// Split options apart since server expects an array
+				data.options = data.options.split(',');
 
 				this.model.set(_.pick(data, 'label', 'options', 'default', 'format', 'required'));
 				this.model.save({

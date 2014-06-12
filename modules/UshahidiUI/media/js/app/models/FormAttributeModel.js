@@ -29,7 +29,6 @@ define(['backbone', 'modules/config'],
 					options = this.get('options') || {},
 					fields = {
 						label: 'Text',
-						key: 'Text', // @todo auto-generate key
 						required: 'Checkbox',
 						cardinality: {
 							title: 'Allowed entries',

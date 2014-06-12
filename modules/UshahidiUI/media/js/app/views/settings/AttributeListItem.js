@@ -75,7 +75,9 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 			serializeData: function ()
 			{
 				var input = this.model.get('input'),
-					type = this.model.get('type');
+					type = this.model.get('type'),
+					data;
+
 				if (input === 'textarea') {
 					input = 'TextArea';
 				} else if (input === 'datetime') {
@@ -84,7 +86,7 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 					// JS equivalent of PHP's ucfirst()
 					input = input.charAt(0).toUpperCase() + input.substr(1);
 				}
-				type = type.charAt(0).toUpperCase() + type.substr(1),
+				type = type.charAt(0).toUpperCase() + type.substr(1);
 
 				data = _.extend(this.model.toJSON(), {
 					input : input,

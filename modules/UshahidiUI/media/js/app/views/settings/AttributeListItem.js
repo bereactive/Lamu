@@ -40,8 +40,8 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 			},
 
 			events: {
-				'click .js-edit-field' : 'editField',
-				'click .js-cancel-edit' : 'cancelEdit',
+				'click .js-edit-field' : 'toggleEdit',
+				'click .js-cancel-edit' : 'toggleEdit',
 				'click .js-delete-field' : 'deleteField',
 				'submit form' : 'saveField'
 			},
@@ -50,7 +50,7 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 			{
 				try {
 					this.form = new BackboneForm({
-						model: this.model,
+						schema: this.model.schema(),
 						idPrefix : 'attribute-',
 						className : 'attribute-form',
 					});
@@ -109,26 +109,22 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 				// todo: use "submitButton: title" in Backbone.Form v0.15
 				$form.append('<button type="submit">Save</button>');
 
+				this.$('.js-form').addClass('hide');
+
 				// hide the field editor form until activated
-				$form.addClass('hide');
-
-				this.$el.append($form);
+				this.$('.js-form').append($form);
 			},
 
-			editField : function(e)
+			toggleEdit : function(e)
 			{
 				e.preventDefault();
 
-				//  hide the section
-				this.form.$el.toggleClass('hide');
-			},
-
-			cancelEdit : function(e)
-			{
-				e.preventDefault();
-
-				//  hide the form
-				this.form.$el.toggleClass('hide');
+				// Reset the form data
+				this.form.setValue(_.extend(this.model.toJSON(), {
+					preview : this.model.get('default')
+				}));
+				// Show/Hide the form
+				this.$('.js-form').toggleClass('hide');
 			},
 
 			saveField : function(e)
@@ -139,7 +135,7 @@ define(['underscore', 'handlebars', 'marionette', 'alertify', 'forms/UshahidiFor
 
 				ddt.log('Forms', 'form data', data);
 
-				this.model.set(_.pick(data, 'label', 'key', 'options', 'default', 'format', 'required'));
+				this.model.set(_.pick(data, 'label', 'options', 'default', 'format', 'required'));
 				ddt.log('Forms', 'updated model', this.model.toJSON());
 				this.model.save()
 					.done(function ()
